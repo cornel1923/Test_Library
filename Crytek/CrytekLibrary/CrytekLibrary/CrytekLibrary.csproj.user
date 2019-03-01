@@ -6,5 +6,6 @@
   <PropertyGroup>
     <ActiveDebugProfile>CrytekLibrary</ActiveDebugProfile>
     <ShowAllFiles>false</ShowAllFiles>
+    <NameOfLastUsedPublishProfile>FolderProfile</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

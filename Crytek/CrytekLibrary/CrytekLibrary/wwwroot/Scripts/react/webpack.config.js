@@ -1,45 +1,68 @@
-﻿const webpack = require('webpack');
+﻿const path = require("path"),
+  webpack = require("webpack"),
+  AssetsPlugin = require("assets-webpack-plugin"),
+  UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+
+const isProd = process.env.NODE_ENV === "production";
+
+const devPlugins = [
+  new AssetsPlugin({
+    prettyPrint: true,
+    filename: "assets.json",
+    path: path.resolve(__dirname, "build")
+  }),
+  new webpack.DefinePlugin({
+    __ENV__: JSON.stringify(process.env.NODE_ENV || "development")
+  })
+];
+
+const prodPlugins = [
+  new UglifyJsPlugin({
+    cache: true,
+    parallel: true,
+    sourceMap: true
+  })
+];
+
+const pluginList = isProd ? [...devPlugins, ...prodPlugins] : devPlugins;
 
 module.exports = {
-    mode: 'production',
-    context: __dirname,
-    entry: "./app.js",
-    output: {
-        path: __dirname + '/build',
-        filename: "main.js"
-    },
-    watch: true,
-    optimization: {
-        splitChunks: {
-            cacheGroups: {
-                commons: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendor',
-                    chunks: 'all'
-                }
-            }
+  mode: "production",
+  context: __dirname,
+  devtool: "",
+  entry: "./app.js",
+  output: {
+    filename: "[name].js",
+    path: path.resolve(__dirname, "build"),
+    publicPath: "build"
+  },
+  watch: true,
+  plugins: pluginList,
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          name: "vendor",
+          chunks: "all"
         }
-    },
-    plugins: [
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': '"production"'
-        })
-    ],
-    module: {
-        rules: [
-            {
-                test: /\.css$/, use: [{ loader: "style-loader" },
-                { loader: "css-loader" }]
-            },
-            {
-                test: /.jsx?$/,
-                exclude: /(node_modules)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['babel-preset-env', 'babel-preset-react']
-                    }
-                }
-            }]
+      }
     }
-}
+  },
+  devtool: isProd ? "" : "inline-source-map",
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [{ loader: "style-loader" }, { loader: "css-loader" }]
+      },
+      {
+        test: /\.m?js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
+        }
+      }
+    ]
+  }
+};

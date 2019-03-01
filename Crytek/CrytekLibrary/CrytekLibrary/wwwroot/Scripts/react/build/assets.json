@@ -1,0 +1,8 @@
+{
+  "main": {
+    "js": "build/main.js"
+  },
+  "vendor": {
+    "js": "build/vendor.js"
+  }
+}

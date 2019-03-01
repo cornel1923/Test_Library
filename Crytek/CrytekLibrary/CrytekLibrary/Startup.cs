@@ -16,10 +16,7 @@ namespace CrytekLibrary
         {
             app.UseStaticFiles();
 
-            //app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-            //{
-            //    HotModuleReplacement = true
-            //});
+            //app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions { HotModuleReplacement = true });
 
             app.UseMvc(routes =>
             {

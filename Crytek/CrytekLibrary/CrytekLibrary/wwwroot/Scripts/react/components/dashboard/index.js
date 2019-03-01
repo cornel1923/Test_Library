@@ -1,5 +1,6 @@
 ﻿import React, { Component } from "react";
-import BookCard from "../bookCard";
+import BooksGrid from "../booksGrid";
+import CategoryMenu from "../categoryMenu";
 
 import "./styles.css";
 
@@ -7,7 +8,8 @@ export default class Dashboard extends Component {
   render() {
     return (
       <div className="dashboard">
-        <BookCard />
+        <CategoryMenu />
+        <BooksGrid />
       </div>
     );
   }
